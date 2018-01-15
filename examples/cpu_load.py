@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 
 import math
-import time
+from time import localtime, sleep
 
 try:
     import psutil
 except ImportError:
     exit("This script requires the psutil module\nInstall with: sudo pip install psutil")
 
-import blinkt
+from blinkt import set_pixel, set_brightness, clear, show
 
 def show_graph(v):
     clear()
