@@ -8,7 +8,9 @@ try:
 except ImportError:
     exit("This script requires the psutil module\nInstall with: sudo pip install psutil")
 
-from blinkt import set_pixel, set_brightness, clear, show
+from blinkt import set_clear_on_exit, set_brightness, set_pixel, show, clear
+
+set_clear_on_exit()
 
 def show_graph(v):
     clear()
