@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
+import math
 import time
-from sys import exit
 
 try:
     import psutil
@@ -10,23 +10,35 @@ except ImportError:
 
 import blinkt
 
-blinkt.set_clear_on_exit()
+def show_graph(v):
+    clear()
+    v *= 8
+    for x in range(8):
 
-def show_graph(v, r, g, b):
-    v *= blinkt.NUM_PIXELS
-    for x in range(blinkt.NUM_PIXELS):
-        if v < 0:
+        if x < 6:
+            r, g, b = 40, 127, 0
+        if x > 5:
+            r, g, b = 127, 0, 2
+        if v  < 0:
             r, g, b = 0, 0, 0
-        else:
-            r, g, b = [int(min(v, 1.0) * c) for c in [r, g, b]]
-        blinkt.set_pixel(x, r, g, b)
+            
+        set_pixel(x, r, g, b)
         v -= 1
 
-    blinkt.show()
-
-blinkt.set_brightness(0.1)
+set_brightness(0.1)
 
 while True:
+    t = localtime()
+    h, m, s = t.tm_hour, t.tm_min, t.tm_sec
+    
     v = psutil.cpu_percent() / 100.0
-    show_graph(v, 255, 255, 255)
-    time.sleep(0.01)
+    show_graph(v)
+
+    set_pixel(0, 40, 127, 0)
+
+    # Blink LED 7 aqua
+    if ((s % 2) > 0):
+        set_pixel(0, 127, 80, 0)
+    
+    show()
+    sleep(.1)
